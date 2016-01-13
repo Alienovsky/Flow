@@ -2,7 +2,10 @@ package com.kamilmade;
 
 import com.kamilmade.enums.Events;
 import com.kamilmade.enums.States;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.statemachine.StateContext;
+import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
@@ -25,8 +28,20 @@ public class ConfigEnums extends EnumStateMachineConfigurerAdapter<States, Event
     public void configure(StateMachineTransitionConfigurer<States, Events> transitions) throws Exception {
         transitions
                 .withExternal()
-                    .source(States.REGISTERED).target(States.CANCELLED)
-                    .event(Events.CANCEL)
+                    .source(States.INITIAL).target(States.REGISTERED)
+                    .event(Events.RUN)
+                .and()
+                .withExternal()
+                    .source(States.CANCELLED).target(States.FINAL)
+                    .event(Events.FINISH)
+                .and()
+                .withExternal()
+                    .source(States.JOINED).target(States.FINAL)
+                    .event(Events.FINISH)
+                .and()
+                .withExternal()
+                .source(States.REGISTERED).target(States.CANCELLED)
+                .event(Events.CANCEL)
                 .and()
                 .withExternal()
                     .source(States.REGISTERED).target(States.JOINED)
@@ -36,4 +51,5 @@ public class ConfigEnums extends EnumStateMachineConfigurerAdapter<States, Event
                     .source(States.REGISTERED)
                     .event(Events.DATA_CHANGED);
     }
+
 }

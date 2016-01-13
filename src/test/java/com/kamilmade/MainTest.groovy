@@ -13,15 +13,39 @@ class MainTest extends Specification {
     @Autowired
     StateMachine<States,Events> stateMachine;
 
-    def "test move state from Registered to Cancelled"(){
+
+
+    def "test start state machine and move from technical INITIAL state to REGISTERED"(){
+        when:
+        stateMachine.start();
+
+        then:
+        stateMachine.getState().getId() == States.INITIAL;
+
+        when:
+        stateMachine.sendEvent(Events.RUN);
+
+        then:
+        stateMachine.getState().getId() == States.REGISTERED;
+    }
+
+    def "test move state from REGISTERED to CANCELLED"(){
         given:
         stateMachine.start();
+        stateMachine.sendEvent(Events.RUN)
 
         when:
         stateMachine.sendEvent(Events.CANCEL);
 
         then:
-        stateMachine.getState() == States.CANCELLED;
+        stateMachine.getState().getId() == States.CANCELLED;
 
+        when:
+        stateMachine.sendEvent(Events.FINISH);
+
+        then:
+        stateMachine.getState().getId() == States.FINAL;
     }
+
+
 }

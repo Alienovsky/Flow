@@ -1,5 +1,5 @@
 package com.kamilmade.enums;
 
 public enum Events {
-    DATA_CHANGED, CANCEL, ONBOARDED;
+    RUN, DATA_CHANGED, CANCEL, ONBOARDED, FINISH;
 }
