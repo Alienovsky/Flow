@@ -8,14 +8,26 @@ import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
+import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
+import org.springframework.statemachine.listener.StateMachineListenerAdapter;
+import org.springframework.statemachine.state.State;
 
 import java.util.EnumSet;
 
 @Configuration
 @EnableStateMachine
 public class ConfigEnums extends EnumStateMachineConfigurerAdapter<States, Events> {
+
+    @Override
+    public void configure(StateMachineConfigurationConfigurer<States, Events> config) throws Exception {
+        config
+                .withConfiguration()
+                .autoStartup(true)
+                .listener(new StateMachineListener());
+    }
+
     @Override
     public void configure(StateMachineStateConfigurer<States, Events> states) throws Exception {
         states.withStates()
@@ -51,5 +63,13 @@ public class ConfigEnums extends EnumStateMachineConfigurerAdapter<States, Event
                     .source(States.REGISTERED)
                     .event(Events.DATA_CHANGED);
     }
+
+    private static final class StateMachineListener extends StateMachineListenerAdapter<States, Events> {
+        @Override
+        public void stateChanged(State<States, Events> from, State<States, Events> to) {
+            System.out.println("Order state changed to " + to.getId());
+        }
+    }
+
 
 }
