@@ -12,7 +12,7 @@ class MainTest extends Specification {
     @Autowired
     StateMachine<States,Events> stateMachine;
 
-    def "test start state machine and move from technical INITIAL state to REGISTERED"(){
+    def " test start state machine and move from technical INITIAL state to REGISTERED"(){
         when:
         stateMachine.start();
 
