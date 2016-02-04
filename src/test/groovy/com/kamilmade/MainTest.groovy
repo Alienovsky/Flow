@@ -2,11 +2,9 @@ package com.kamilmade
 
 import com.kamilmade.enums.Events
 import com.kamilmade.enums.States
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Bean
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.statemachine.StateMachine
+import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(classes = ConfigEnums)
